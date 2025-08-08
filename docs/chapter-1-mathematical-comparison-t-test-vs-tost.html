@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 1: Mathematical Comparison: t-test vs TOST | Bioequivalence for Biosimilar</title>
+  <meta name="description" content="<p>This book introduces statistical methods for evaluating bioequivalence in biosimilar development.
+Topics include equivalence testing, TOST, and practical R examples.</p>" />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 1: Mathematical Comparison: t-test vs TOST | Bioequivalence for Biosimilar" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="<p>This book introduces statistical methods for evaluating bioequivalence in biosimilar development.
+Topics include equivalence testing, TOST, and practical R examples.</p>" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 1: Mathematical Comparison: t-test vs TOST | Bioequivalence for Biosimilar" />
+  
+  <meta name="twitter:description" content="<p>This book introduces statistical methods for evaluating bioequivalence in biosimilar development.
+Topics include equivalence testing, TOST, and practical R examples.</p>" />
+  
+
+<meta name="author" content="Kyungmin In, GCCL" />
+
+
+<meta name="date" content="2025-08-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="author.html"/>
+<link rel="next" href="chapter-2-application-of-tost-in-r.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Bioequivalence for Biosimilar</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Equivalence Testing Overview</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#why-equivalence-matters-in-biosimilar-development"><i class="fa fa-check"></i>Why Equivalence Matters in Biosimilar Development</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#the-problem-with-traditional-t-tests"><i class="fa fa-check"></i>The Problem with Traditional t-tests</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#introducing-tost-two-one-sided-tests"><i class="fa fa-check"></i>Introducing TOST (Two One-Sided Tests)</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#visualizing-equivalence"><i class="fa fa-check"></i>Visualizing Equivalence</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#summary"><i class="fa fa-check"></i>Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="author.html"><a href="author.html"><i class="fa fa-check"></i>Author</a></li>
+<li class="chapter" data-level="" data-path="chapter-1-mathematical-comparison-t-test-vs-tost.html"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html"><i class="fa fa-check"></i>Chapter 1: Mathematical Comparison: t-test vs TOST</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapter-1-mathematical-comparison-t-test-vs-tost.html"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#t-test-testing-for-difference"><i class="fa fa-check"></i>1. t-test: Testing for Difference</a></li>
+<li class="chapter" data-level="" data-path="chapter-1-mathematical-comparison-t-test-vs-tost.html"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#tost-testing-for-equivalence"><i class="fa fa-check"></i>2. TOST: Testing for Equivalence</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapter-1-mathematical-comparison-t-test-vs-tost.html"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#summary-of-logic"><i class="fa fa-check"></i>Summary of Logic</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="chapter-1-mathematical-comparison-t-test-vs-tost.html"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#simulation-t-test-vs-tost"><i class="fa fa-check"></i>3. Simulation: t-test vs TOST</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapter-1-mathematical-comparison-t-test-vs-tost.html"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#key-results"><i class="fa fa-check"></i>Key Results</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="chapter-1-mathematical-comparison-t-test-vs-tost.html"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#code-used-for-the-simulation"><i class="fa fa-check"></i>4. Code used for the Simulation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html"><i class="fa fa-check"></i>Chapter 2: Application of TOST in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#example-scenario"><i class="fa fa-check"></i>Example Scenario</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#step-1-simulated-data"><i class="fa fa-check"></i>Step 1: Simulated Data</a></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#step-2-traditional-t-test-for-comparison"><i class="fa fa-check"></i>Step 2: Traditional t-test (for comparison)</a></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#step-3-tost-analysis-with-toster"><i class="fa fa-check"></i>Step 3: TOST Analysis with TOSTER</a></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#interpretation"><i class="fa fa-check"></i>Interpretation</a></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#step-4-visualizing-equivalence"><i class="fa fa-check"></i>Step 4: Visualizing Equivalence</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#manual-tost-in-r"><i class="fa fa-check"></i>Manual TOST in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#step-1-mean-difference-and-standard-error"><i class="fa fa-check"></i>Step 1: Mean difference and standard error</a></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#step-2-degrees-of-freedom-and-critical-t-value"><i class="fa fa-check"></i>Step 2: Degrees of freedom and critical t-value</a></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#step-3-confidence-interval-of-the-difference"><i class="fa fa-check"></i>Step 3: Confidence interval of the difference</a></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#step-4-compare-ci-to-equivalence-margins"><i class="fa fa-check"></i>Step 4: Compare CI to Equivalence Margins</a></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#summary-table"><i class="fa fa-check"></i>Summary Table</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="chapter-3-analytical-similarity-for-potency-assay-using-tost.html"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html"><i class="fa fa-check"></i>Chapter 3: Analytical Similarity for Potency Assay Using TOST</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapter-3-analytical-similarity-for-potency-assay-using-tost.html"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#limitation-of-toster-package-in-r"><i class="fa fa-check"></i>Limitation of <code>TOSTER</code> package in R</a></li>
+<li class="chapter" data-level="" data-path="chapter-3-analytical-similarity-for-potency-assay-using-tost.html"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#tost-in-real-world-application"><i class="fa fa-check"></i>TOST in Real World Application</a></li>
+<li class="chapter" data-level="" data-path="chapter-3-analytical-similarity-for-potency-assay-using-tost.html"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#conclusion"><i class="fa fa-check"></i>Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="chapter-4-equivalence-margin-on-the-raw-scale.html"><a href="chapter-4-equivalence-margin-on-the-raw-scale.html"><i class="fa fa-check"></i>Chapter 4: Equivalence Margin on the Raw Scale</a></li>
+<li class="chapter" data-level="" data-path="chapter-5-power-in-tost.html"><a href="chapter-5-power-in-tost.html"><i class="fa fa-check"></i>Chapter 5: Power in TOST</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapter-5-power-in-tost.html"><a href="chapter-5-power-in-tost.html#power-calculation-using-the-toster-package"><i class="fa fa-check"></i>Power Calculation Using the <code>TOSTER</code> Package</a></li>
+<li class="chapter" data-level="" data-path="chapter-5-power-in-tost.html"><a href="chapter-5-power-in-tost.html#custom-power-estimation-function"><i class="fa fa-check"></i>Custom Power Estimation Function</a></li>
+<li class="chapter" data-level="" data-path="chapter-5-power-in-tost.html"><a href="chapter-5-power-in-tost.html#output-example"><i class="fa fa-check"></i>Output Example</a></li>
+<li class="chapter" data-level="" data-path="chapter-5-power-in-tost.html"><a href="chapter-5-power-in-tost.html#conclusion-1"><i class="fa fa-check"></i>Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="conclusion-2.html"><a href="conclusion-2.html"><i class="fa fa-check"></i>Conclusion</a>
+<ul>
+<li class="chapter" data-level="" data-path="conclusion-2.html"><a href="conclusion-2.html#summary-of-key-concepts"><i class="fa fa-check"></i>Summary of Key Concepts</a></li>
+<li class="chapter" data-level="" data-path="conclusion-2.html"><a href="conclusion-2.html#practical-implications"><i class="fa fa-check"></i>Practical Implications</a></li>
+<li class="chapter" data-level="" data-path="conclusion-2.html"><a href="conclusion-2.html#final-thoughts"><i class="fa fa-check"></i>Final Thoughts</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Bioequivalence for Biosimilar</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="chapter-1-mathematical-comparison-t-test-vs-tost" class="section level1 unnumbered hasAnchor">
+<h1>Chapter 1: Mathematical Comparison: t-test vs TOST<a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#chapter-1-mathematical-comparison-t-test-vs-tost" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="t-test-testing-for-difference" class="section level2 unnumbered hasAnchor">
+<h2>1. t-test: Testing for Difference<a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#t-test-testing-for-difference" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In a standard <em>two-sample t-test</em>, we assess:</p>
+<ul>
+<li><strong>Null Hypothesis (H₀):</strong> μ₁ = μ₂ (no difference)</li>
+<li><strong>Alternative (H₁):</strong> μ₁ ≠ μ₂ (there is a difference)</li>
+</ul>
+<p>The test statistic:</p>
+<p><span class="math display">\[
+t = \frac{\bar{X}_1 - \bar{X}_2}{s_p \cdot \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}
+\]</span></p>
+<p>with pooled standard deviation <span class="math inline">\(s_p\)</span>, follows a <em>t-distribution</em>. We reject H₀ if <span class="math inline">\(|t| &gt; t_{α/2}\)</span>.</p>
+<p><strong>Key limitation</strong>: If p &gt; 0.05, it only means <em>no evidence of difference</em>, not <em>evidence of similarity</em>.</p>
+<hr />
+</div>
+<div id="tost-testing-for-equivalence" class="section level2 unnumbered hasAnchor">
+<h2>2. TOST: Testing for Equivalence<a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#tost-testing-for-equivalence" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In TOST, we define <strong>equivalence bounds</strong>: <span class="math inline">\([-Δ, +Δ]\)</span>, where Δ is the <em>maximum acceptable difference</em>.</p>
+<p>TOST is performed:</p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(H₀: μ₁ - μ₂ ≤ -Δ\)</span> vs <span class="math inline">\(H₁: μ₁ - μ₂ &gt; -Δ\)</span></li>
+<li><span class="math inline">\(H₀: μ₁ - μ₂ ≥ +Δ\)</span> vs <span class="math inline">\(H₁: μ₁ - μ₂ &lt; +Δ\)</span></li>
+</ol>
+<p>We reject both H₀’s if the <strong>(1–2α) confidence interval</strong> for <span class="math inline">\(μ₁ - μ₂\)</span> is <em>entirely within</em> <span class="math inline">\([-Δ, +Δ]\)</span>.</p>
+<blockquote>
+<p>Visualization: Equivalence is demonstrated if the CI ⊂ [-Δ, +Δ]</p>
+</blockquote>
+<hr />
+<div id="summary-of-logic" class="section level3 unnumbered hasAnchor">
+<h3>Summary of Logic<a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#summary-of-logic" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<table>
+<colgroup>
+<col width="20%" />
+<col width="37%" />
+<col width="42%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th>t-test</th>
+<th>TOST</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Goal</td>
+<td>Detect a difference</td>
+<td>Confirm similarity</td>
+</tr>
+<tr class="even">
+<td>H₀</td>
+<td>μ₁ = μ₂</td>
+<td>|μ₁ – μ₂| &gt; Δ</td>
+</tr>
+<tr class="odd">
+<td>CI threshold</td>
+<td>CI excludes 0</td>
+<td>CI fully within [-Δ, +Δ]</td>
+</tr>
+<tr class="even">
+<td>Conclusion</td>
+<td>Difference exists or not</td>
+<td>Equivalence confirmed or not</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="simulation-t-test-vs-tost" class="section level2 unnumbered hasAnchor">
+<h2>3. Simulation: t-test vs TOST<a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#simulation-t-test-vs-tost" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We conducted 10,000 simulations across a range of sample size (n = 2 to 100 ) to evaluate the following:</p>
+<ul>
+<li>Random sampling from <strong>two groups with different means</strong></li>
+<li>Comparison of those sample means to determine <strong>whether a difference is detected</strong></li>
+<li>The <strong>correct conclusion</strong> in all cases: tho tow group means <strong>are different</strong>.</li>
+</ul>
+<p>Estimation of the <strong>probability of a correct conclusion</strong>, defined as <strong>correctly identifying that the two group means are different</strong>, using two statistical approaches: <strong>t-test</strong> and <strong>TOST</strong></p>
+<div id="key-results" class="section level3 unnumbered hasAnchor">
+<h3>Key Results<a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#key-results" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="float">
+<img src="fig/ttest_vs_tost_plot.png" alt="Simulation results" />
+<div class="figcaption"><strong>Simulation results</strong></div>
+</div>
+<ul>
+<li><p><strong>t-test</strong>: Designed to detected differences, but in simulations, it often <strong>fails to detect small true difference when sample size increases</strong>, leading to a <strong>false sense of equivalence</strong>. This effect worsens as the sample size increases due to narrowing confidence intervals <strong>centered near zero</strong>, especially when the true difference is small.</p></li>
+<li><p><strong>TOST</strong>: Designed to test for equivalence. As sample size increases, TOST becomes <strong>more likely to correctly reject equivalence when the means differ</strong>, reaching <strong>near-perfect accuracy</strong> beyond <strong>n ≈ 60</strong>.</p></li>
+</ul>
+<blockquote>
+<p><strong>Insight</strong>: A non-significant t-test does not imply equivalence. In fact, t-test becomes <strong>less reliable at detecting small true differences as sample size increases</strong>, while <strong>TOST correctly rejects equivalence with increasing sample size. Equivalence requires a dedicated test, and TOST fulfills that purpose</strong>.</p>
+</blockquote>
+<hr />
+</div>
+</div>
+<div id="code-used-for-the-simulation" class="section level2 unnumbered hasAnchor">
+<h2>4. Code used for the Simulation<a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#code-used-for-the-simulation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-1" tabindex="-1"></a><span class="fu">library</span>(parallel)</span>
+<span id="cb1-2"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-2" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-3" tabindex="-1"></a><span class="co"># Parallelized t.test simulation</span></span>
+<span id="cb1-4"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-4" tabindex="-1"></a>sim_ttest <span class="ot">&lt;-</span> <span class="cf">function</span>(target_n, g1, g2, <span class="at">reps =</span> <span class="dv">10000</span>) {</span>
+<span id="cb1-5"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-5" tabindex="-1"></a>  cl <span class="ot">&lt;-</span> <span class="fu">makeCluster</span>(<span class="fu">detectCores</span>() <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb1-6"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-6" tabindex="-1"></a>  <span class="fu">clusterExport</span>(cl, <span class="at">varlist =</span> <span class="fu">c</span>(<span class="st">&quot;g1&quot;</span>, <span class="st">&quot;g2&quot;</span>, <span class="st">&quot;reps&quot;</span>), <span class="at">envir =</span> <span class="fu">environment</span>())</span>
+<span id="cb1-7"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-7" tabindex="-1"></a>  n_vec <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">:</span>target_n</span>
+<span id="cb1-8"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-8" tabindex="-1"></a>  results <span class="ot">&lt;-</span> <span class="fu">parSapply</span>(cl, n_vec, <span class="cf">function</span>(i) {</span>
+<span id="cb1-9"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-9" tabindex="-1"></a>    <span class="fu">mean</span>(<span class="fu">replicate</span>(reps, {</span>
+<span id="cb1-10"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-10" tabindex="-1"></a>      g1.s <span class="ot">&lt;-</span> <span class="fu">sample</span>(g1, i)</span>
+<span id="cb1-11"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-11" tabindex="-1"></a>      g2.s <span class="ot">&lt;-</span> <span class="fu">sample</span>(g2, i)</span>
+<span id="cb1-12"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-12" tabindex="-1"></a>      <span class="fu">t.test</span>(g1.s, g2.s)<span class="sc">$</span>p.value <span class="sc">&gt;</span> <span class="fl">0.05</span></span>
+<span id="cb1-13"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-13" tabindex="-1"></a>    }))</span>
+<span id="cb1-14"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-14" tabindex="-1"></a>  })</span>
+<span id="cb1-15"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-15" tabindex="-1"></a>  <span class="fu">stopCluster</span>(cl)</span>
+<span id="cb1-16"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-16" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">n =</span> n_vec, <span class="at">probability =</span> results <span class="sc">*</span> <span class="dv">100</span>)</span>
+<span id="cb1-17"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-17" tabindex="-1"></a>}</span>
+<span id="cb1-18"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-18" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-19" tabindex="-1"></a><span class="co"># Parallelized TOST-like CI check</span></span>
+<span id="cb1-20"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-20" tabindex="-1"></a>sim_tost <span class="ot">&lt;-</span> <span class="cf">function</span>(target_n, g1, g2, margin, <span class="at">reps =</span> <span class="dv">10000</span>) {</span>
+<span id="cb1-21"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-21" tabindex="-1"></a>  cl <span class="ot">&lt;-</span> <span class="fu">makeCluster</span>(<span class="fu">detectCores</span>() <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb1-22"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-22" tabindex="-1"></a>  <span class="fu">clusterExport</span>(cl, <span class="at">varlist =</span> <span class="fu">c</span>(<span class="st">&quot;g1&quot;</span>, <span class="st">&quot;g2&quot;</span>, <span class="st">&quot;margin&quot;</span>, <span class="st">&quot;reps&quot;</span>), <span class="at">envir =</span> <span class="fu">environment</span>())</span>
+<span id="cb1-23"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-23" tabindex="-1"></a>  n_vec <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">:</span>target_n</span>
+<span id="cb1-24"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-24" tabindex="-1"></a>  results <span class="ot">&lt;-</span> <span class="fu">parSapply</span>(cl, n_vec, <span class="cf">function</span>(i) {</span>
+<span id="cb1-25"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-25" tabindex="-1"></a>    <span class="fu">mean</span>(<span class="fu">replicate</span>(reps, {</span>
+<span id="cb1-26"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-26" tabindex="-1"></a>      g1.s <span class="ot">&lt;-</span> <span class="fu">sample</span>(g1, i)</span>
+<span id="cb1-27"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-27" tabindex="-1"></a>      g2.s <span class="ot">&lt;-</span> <span class="fu">sample</span>(g2, i)</span>
+<span id="cb1-28"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-28" tabindex="-1"></a>      diff <span class="ot">&lt;-</span> <span class="fu">mean</span>(g2.s) <span class="sc">-</span> <span class="fu">mean</span>(g1.s)</span>
+<span id="cb1-29"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-29" tabindex="-1"></a>      sd1 <span class="ot">&lt;-</span> <span class="fu">sd</span>(g1.s)</span>
+<span id="cb1-30"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-30" tabindex="-1"></a>      sd2 <span class="ot">&lt;-</span> <span class="fu">sd</span>(g2.s)</span>
+<span id="cb1-31"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-31" tabindex="-1"></a>      se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(sd1<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> i <span class="sc">+</span> sd2<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> i)</span>
+<span id="cb1-32"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-32" tabindex="-1"></a>      df <span class="ot">&lt;-</span> ((sd1<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> i <span class="sc">+</span> sd2<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> i)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span></span>
+<span id="cb1-33"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-33" tabindex="-1"></a>            ((sd1<span class="sc">^</span><span class="dv">4</span>) <span class="sc">/</span> ((i <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> i<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> (sd2<span class="sc">^</span><span class="dv">4</span>) <span class="sc">/</span> ((i <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> i<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb1-34"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-34" tabindex="-1"></a>      t_crit <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="fl">0.95</span>, df)</span>
+<span id="cb1-35"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-35" tabindex="-1"></a>      lci <span class="ot">&lt;-</span> diff <span class="sc">-</span> t_crit <span class="sc">*</span> se</span>
+<span id="cb1-36"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-36" tabindex="-1"></a>      uci <span class="ot">&lt;-</span> diff <span class="sc">+</span> t_crit <span class="sc">*</span> se</span>
+<span id="cb1-37"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-37" tabindex="-1"></a>      (lci <span class="sc">&gt;</span> <span class="sc">-</span>margin) <span class="sc">&amp;</span> (uci <span class="sc">&lt;</span> margin)</span>
+<span id="cb1-38"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-38" tabindex="-1"></a>    }))</span>
+<span id="cb1-39"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-39" tabindex="-1"></a>  })</span>
+<span id="cb1-40"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-40" tabindex="-1"></a>  <span class="fu">stopCluster</span>(cl)</span>
+<span id="cb1-41"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-41" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">n =</span> n_vec, <span class="at">probability =</span> results <span class="sc">*</span> <span class="dv">100</span>)</span>
+<span id="cb1-42"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-42" tabindex="-1"></a>}</span>
+<span id="cb1-43"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-43" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-44" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-45" tabindex="-1"></a><span class="co"># Set seed and simulate</span></span>
+<span id="cb1-46"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-46" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0815</span>)</span>
+<span id="cb1-47"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-47" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>, <span class="fl">0.8987491</span>, <span class="fl">0.3197588</span>)</span>
+<span id="cb1-48"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-48" tabindex="-1"></a>g2 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>, <span class="fl">1.098018</span>, <span class="fl">0.4273691</span>)</span>
+<span id="cb1-49"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-49" tabindex="-1"></a>margin <span class="ot">&lt;-</span> <span class="fl">1.5</span> <span class="sc">*</span> <span class="fu">sd</span>(g1)</span>
+<span id="cb1-50"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-50" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-51" tabindex="-1"></a>result_ttest <span class="ot">&lt;-</span> <span class="fu">sim_ttest</span>(<span class="dv">100</span>, g1, g2)</span>
+<span id="cb1-52"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-52" tabindex="-1"></a>result_tost <span class="ot">&lt;-</span> <span class="fu">sim_tost</span>(<span class="dv">100</span>, g1, g2, margin)</span>
+<span id="cb1-53"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-53" tabindex="-1"></a></span>
+<span id="cb1-54"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-54" tabindex="-1"></a><span class="co"># Combine and plot</span></span>
+<span id="cb1-55"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-55" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-56"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-56" tabindex="-1"></a>result_ttest<span class="sc">$</span>method <span class="ot">&lt;-</span> <span class="st">&quot;t.test&quot;</span></span>
+<span id="cb1-57"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-57" tabindex="-1"></a>result_tost<span class="sc">$</span>method <span class="ot">&lt;-</span> <span class="st">&quot;equivalence.test&quot;</span></span>
+<span id="cb1-58"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-58" tabindex="-1"></a>df_plot <span class="ot">&lt;-</span> <span class="fu">rbind</span>(result_ttest, result_tost)</span>
+<span id="cb1-59"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-59" tabindex="-1"></a></span>
+<span id="cb1-60"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-60" tabindex="-1"></a><span class="fu">ggplot</span>(df_plot, <span class="fu">aes</span>(n, probability, <span class="at">color =</span> method)) <span class="sc">+</span></span>
+<span id="cb1-61"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-61" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb1-62"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-62" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">&quot;Sample size (n)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1-63"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-63" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Correct conclusion probability (%)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1-64"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#cb1-64" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Comparison of t-test vs Equivalence Test (TOST logic)&quot;</span>)</span></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="author.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="chapter-2-application-of-tost-in-r.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/USERNAME/REPO/edit/BRANCH/01-ttestvstost.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["_main.HTML"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

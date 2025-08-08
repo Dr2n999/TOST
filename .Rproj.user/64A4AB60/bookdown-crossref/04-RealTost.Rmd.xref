@@ -1,0 +1,13 @@
+h1:chapter-4-analytical-similarity-for-potency-assay-using-tost Chapter 4: Analytical Similarity for Potency Assay Using TOST
+h2:equal-sample-size-and-variance Equal sample size and variance
+h2:unequal-sample-size-and-equal-variance Unequal sample size and equal variance
+h2:unequal-variance Unequal variance
+h2:sample-size-adjustment-for-unequal-group-sizes Sample size Adjustment for Unequal Group Sizes
+h3:regulatory-background-rld-sample-size-limitation Regulatory Background: RLD Sample Size Limitation
+h3:adjustment-rule-applied-in-code Adjustment Rule Applied in Code
+h2:example-data 1. Example Data
+h2:margin-conversion-raw-sd-log-margin 2. Margin Conversion: Raw SD → Log Margin
+h2:tost-function-supports-unequal-sample-sizes 3. TOST Function: Supports Unequal Sample Sizes
+h2:applying-tost 4. Applying TOST
+h2:tost-result 5. TOST Result
+

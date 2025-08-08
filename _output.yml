@@ -1,0 +1,12 @@
+bookdown::gitbook:
+  css: style.css
+  fig_caption: true       
+  keep_md: true 
+  config:
+    toc:
+      before: |
+        <li><a href="./">Bioequivalence for Biosimilar</a></li>
+      after: |
+        <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+    edit: https://github.com/USERNAME/REPO/edit/BRANCH/%s
+    download: ["HTML"]

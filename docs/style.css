@@ -1,0 +1,17 @@
+p.caption {
+  color: #777;
+  margin-top: 10px;
+}
+p code {
+  white-space: inherit;
+}
+pre {
+  word-break: normal;
+  word-wrap: normal;
+  max-width: 100%; /* 코드 청크의 너비를 100%로 확장 */
+  overflow-x: auto; /* 가로로 넘칠 경우 스크롤을 추가 */
+}
+
+pre code {
+  white-space: inherit;
+}

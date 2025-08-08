@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3: Analytical Similarity for Potency Assay Using TOST | Bioequivalence for Biosimilar</title>
+  <meta name="description" content="<p>This book introduces statistical methods for evaluating bioequivalence in biosimilar development.
+Topics include equivalence testing, TOST, and practical R examples.</p>" />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3: Analytical Similarity for Potency Assay Using TOST | Bioequivalence for Biosimilar" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="<p>This book introduces statistical methods for evaluating bioequivalence in biosimilar development.
+Topics include equivalence testing, TOST, and practical R examples.</p>" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3: Analytical Similarity for Potency Assay Using TOST | Bioequivalence for Biosimilar" />
+  
+  <meta name="twitter:description" content="<p>This book introduces statistical methods for evaluating bioequivalence in biosimilar development.
+Topics include equivalence testing, TOST, and practical R examples.</p>" />
+  
+
+<meta name="author" content="Kyungmin In, GCCL" />
+
+
+<meta name="date" content="2025-08-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="chapter-2-application-of-tost-in-r.html"/>
+<link rel="next" href="chapter-4-equivalence-margin-on-the-raw-scale.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Bioequivalence for Biosimilar</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Equivalence Testing Overview</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#why-equivalence-matters-in-biosimilar-development"><i class="fa fa-check"></i>Why Equivalence Matters in Biosimilar Development</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#the-problem-with-traditional-t-tests"><i class="fa fa-check"></i>The Problem with Traditional t-tests</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#introducing-tost-two-one-sided-tests"><i class="fa fa-check"></i>Introducing TOST (Two One-Sided Tests)</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#visualizing-equivalence"><i class="fa fa-check"></i>Visualizing Equivalence</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#summary"><i class="fa fa-check"></i>Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="author.html"><a href="author.html"><i class="fa fa-check"></i>Author</a></li>
+<li class="chapter" data-level="" data-path="chapter-1-mathematical-comparison-t-test-vs-tost.html"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html"><i class="fa fa-check"></i>Chapter 1: Mathematical Comparison: t-test vs TOST</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapter-1-mathematical-comparison-t-test-vs-tost.html"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#t-test-testing-for-difference"><i class="fa fa-check"></i>1. t-test: Testing for Difference</a></li>
+<li class="chapter" data-level="" data-path="chapter-1-mathematical-comparison-t-test-vs-tost.html"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#tost-testing-for-equivalence"><i class="fa fa-check"></i>2. TOST: Testing for Equivalence</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapter-1-mathematical-comparison-t-test-vs-tost.html"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#summary-of-logic"><i class="fa fa-check"></i>Summary of Logic</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="chapter-1-mathematical-comparison-t-test-vs-tost.html"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#simulation-t-test-vs-tost"><i class="fa fa-check"></i>3. Simulation: t-test vs TOST</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapter-1-mathematical-comparison-t-test-vs-tost.html"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#key-results"><i class="fa fa-check"></i>Key Results</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="chapter-1-mathematical-comparison-t-test-vs-tost.html"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#code-used-for-the-simulation"><i class="fa fa-check"></i>4. Code used for the Simulation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html"><i class="fa fa-check"></i>Chapter 2: Application of TOST in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#example-scenario"><i class="fa fa-check"></i>Example Scenario</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#step-1-simulated-data"><i class="fa fa-check"></i>Step 1: Simulated Data</a></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#step-2-traditional-t-test-for-comparison"><i class="fa fa-check"></i>Step 2: Traditional t-test (for comparison)</a></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#step-3-tost-analysis-with-toster"><i class="fa fa-check"></i>Step 3: TOST Analysis with TOSTER</a></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#interpretation"><i class="fa fa-check"></i>Interpretation</a></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#step-4-visualizing-equivalence"><i class="fa fa-check"></i>Step 4: Visualizing Equivalence</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#manual-tost-in-r"><i class="fa fa-check"></i>Manual TOST in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#step-1-mean-difference-and-standard-error"><i class="fa fa-check"></i>Step 1: Mean difference and standard error</a></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#step-2-degrees-of-freedom-and-critical-t-value"><i class="fa fa-check"></i>Step 2: Degrees of freedom and critical t-value</a></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#step-3-confidence-interval-of-the-difference"><i class="fa fa-check"></i>Step 3: Confidence interval of the difference</a></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#step-4-compare-ci-to-equivalence-margins"><i class="fa fa-check"></i>Step 4: Compare CI to Equivalence Margins</a></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#summary-table"><i class="fa fa-check"></i>Summary Table</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="chapter-3-analytical-similarity-for-potency-assay-using-tost.html"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html"><i class="fa fa-check"></i>Chapter 3: Analytical Similarity for Potency Assay Using TOST</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapter-3-analytical-similarity-for-potency-assay-using-tost.html"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#limitation-of-toster-package-in-r"><i class="fa fa-check"></i>Limitation of <code>TOSTER</code> package in R</a></li>
+<li class="chapter" data-level="" data-path="chapter-3-analytical-similarity-for-potency-assay-using-tost.html"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#tost-in-real-world-application"><i class="fa fa-check"></i>TOST in Real World Application</a></li>
+<li class="chapter" data-level="" data-path="chapter-3-analytical-similarity-for-potency-assay-using-tost.html"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#conclusion"><i class="fa fa-check"></i>Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="chapter-4-equivalence-margin-on-the-raw-scale.html"><a href="chapter-4-equivalence-margin-on-the-raw-scale.html"><i class="fa fa-check"></i>Chapter 4: Equivalence Margin on the Raw Scale</a></li>
+<li class="chapter" data-level="" data-path="chapter-5-power-in-tost.html"><a href="chapter-5-power-in-tost.html"><i class="fa fa-check"></i>Chapter 5: Power in TOST</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapter-5-power-in-tost.html"><a href="chapter-5-power-in-tost.html#power-calculation-using-the-toster-package"><i class="fa fa-check"></i>Power Calculation Using the <code>TOSTER</code> Package</a></li>
+<li class="chapter" data-level="" data-path="chapter-5-power-in-tost.html"><a href="chapter-5-power-in-tost.html#custom-power-estimation-function"><i class="fa fa-check"></i>Custom Power Estimation Function</a></li>
+<li class="chapter" data-level="" data-path="chapter-5-power-in-tost.html"><a href="chapter-5-power-in-tost.html#output-example"><i class="fa fa-check"></i>Output Example</a></li>
+<li class="chapter" data-level="" data-path="chapter-5-power-in-tost.html"><a href="chapter-5-power-in-tost.html#conclusion-1"><i class="fa fa-check"></i>Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="conclusion-2.html"><a href="conclusion-2.html"><i class="fa fa-check"></i>Conclusion</a>
+<ul>
+<li class="chapter" data-level="" data-path="conclusion-2.html"><a href="conclusion-2.html#summary-of-key-concepts"><i class="fa fa-check"></i>Summary of Key Concepts</a></li>
+<li class="chapter" data-level="" data-path="conclusion-2.html"><a href="conclusion-2.html#practical-implications"><i class="fa fa-check"></i>Practical Implications</a></li>
+<li class="chapter" data-level="" data-path="conclusion-2.html"><a href="conclusion-2.html#final-thoughts"><i class="fa fa-check"></i>Final Thoughts</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Bioequivalence for Biosimilar</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="chapter-3-analytical-similarity-for-potency-assay-using-tost" class="section level1 unnumbered hasAnchor">
+<h1>Chapter 3: Analytical Similarity for Potency Assay Using TOST<a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#chapter-3-analytical-similarity-for-potency-assay-using-tost" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="limitation-of-toster-package-in-r" class="section level2 unnumbered hasAnchor">
+<h2>Limitation of <code>TOSTER</code> package in R<a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#limitation-of-toster-package-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>While the <code>TOSTER</code> package offers a convenient and user-friendly way to conduct equivalence testing, it assumes equal variances by default and does not support flexible adjustments for unequal sample sizes or variance heterogeneity.</p>
+<p>In real-world applications—particularly in biosimilar or analytical similarity studies—test and reference groups often differ in both size and variability. For example, the reference product may have a large, established data set with minimal variability, while the test product might be limited in size and exhibit different dispersion characteristics.</p>
+<p>To account for these practical challenges, we implemented a custom function <code>tost_auto_var_equal()</code>, which:</p>
+<ul>
+<li><p>Automatically checks variance equality using Levene’s test</p></li>
+<li><p>Applies pooled or Welch-adjusted degrees of freedom as needed</p></li>
+<li><p>Allows asymmetric sample sizes and includes RLD-based adjustments</p></li>
+<li><p>Computes one-sided t-tests and confidence intervals consistent with the TOST framework</p></li>
+</ul>
+<p>For this custom implementation, the following equations are used internally to compute the standard error, degrees of freedom, and confidence intervals, depending on the sample size and variance assumptions:</p>
+<p><strong>Equal sample size and variance</strong></p>
+<p><span class="math display">\[
+SE_{\text{equal}} = \sqrt{ \frac{ \sigma_1^2 + \sigma_2^2 }{n} }
+\]</span></p>
+<p><span class="math display">\[
+df_{\text{equal}} = n_1 + n_2 - 2
+\]</span></p>
+<p><span class="math display">\[
+CI = \delta \pm t_{1-\alpha, df_{\text{equal}}} \times SE_{\text{equal}}
+\]</span></p>
+<p><strong>Unequal sample size and equal variance</strong></p>
+<p><span class="math display">\[
+s_p^2 = \frac{ (n_1 - 1)\sigma_1^2 + (n_2 - 1)\sigma_2^2 }{ n_1 + n_2 - 2 }
+\]</span></p>
+<p><span class="math display">\[
+SE_{\text{pooled}} = \sqrt{ s_p^2 \left( \frac{1}{n_1} + \frac{1}{n_2} \right) }
+\]</span></p>
+<p><span class="math display">\[
+df_{\text{pooled}} = n_1 + n_2 - 2
+\]</span></p>
+<p><span class="math display">\[
+CI = \delta \pm t_{1-\alpha, df_{\text{pooled}}} \times SE_{\text{pooled}}
+\]</span></p>
+<p><strong>Unequal variance</strong></p>
+<p><span class="math display">\[
+SE_{\text{Welch}} = \sqrt{ \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2} }
+\]</span></p>
+<p><span class="math display">\[
+df_{\text{Welch}} = \frac{ \left( \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2} \right)^2 }
+{ \frac{ \sigma_1^4 }{ n_1^2 (n_1 - 1) } + \frac{ \sigma_2^4 }{ n_2^2 (n_2 - 1) } }
+\]</span></p>
+<p><span class="math display">\[
+CI = \delta \pm t_{1-\alpha, df_{\text{Welch}}} \times SE_{\text{Welch}}
+\]</span></p>
+<table>
+<colgroup>
+<col width="35%" />
+<col width="64%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\delta\)</span></td>
+<td>Mean difference: <span class="math inline">\(\bar{x}_1 - \bar{x}_2\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\sigma_1^2, \sigma_2^2\)</span></td>
+<td>Sample variances (groups 1 and 2)</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(n_1, n_2\)</span></td>
+<td>Sample sizes for test and reference groups</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(df\)</span></td>
+<td>Degrees of freedom</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(t_{1-\alpha, df}\)</span></td>
+<td>Critical t value at 90% CI (one-sided α=0.05)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</div>
+<div id="tost-in-real-world-application" class="section level2 unnumbered hasAnchor">
+<h2>TOST in Real World Application<a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#tost-in-real-world-application" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To demonstrate how the custom <code>tost_auto_var_equal()</code> function works in practice, we simulate a simple example of potency testing where the test product has fewer available samples than the reference product since in potency testing for lot release or comparability studies, it is common that <strong>test samples are limited in number</strong>, while <strong>reference samples are more readily available</strong>.</p>
+<p>Regulatory authorities, including the <strong>US FDA</strong>, permit the use of <strong>TOST</strong> to evaluate <strong>analytical similarity</strong>, even in the presence of sample size imbalance and variance heterogeneity, while allowing an excessively large RLD sample size can artificially narrow the confidence interval, leading to potentially biased conclusions regarding equivalence.</p>
+<p>To mitigate this, regulatory guidance and internal validation practices often recommend limiting the effective sample size of the reference group. One commonly used rule is to cap the RLD sample size at <strong>1.5 times that of the test group</strong>.</p>
+<p>It is also common to use a margin of <strong>±1.5 times the standard deviation of the reference group (SDref)</strong>. This approach accounts for the <strong>biological variability</strong> of the assay and is widely accepted in practice (e.g., USP &lt;1033&gt;, bioassay validation guidelines), such as:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb23-1" tabindex="-1"></a><span class="co"># Example margin based on SDref</span></span>
+<span id="cb23-2"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb23-2" tabindex="-1"></a>sd_ref <span class="ot">&lt;-</span> <span class="fu">sd</span>(group_ref)</span>
+<span id="cb23-3"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb23-3" tabindex="-1"></a>margin <span class="ot">&lt;-</span> <span class="fl">1.5</span> <span class="sc">*</span> sd_ref</span></code></pre></div>
+<p>Therefore we can create simulation data set and set the equivalence margin such as:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb24-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb24-2"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb24-2" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb24-3" tabindex="-1"></a><span class="co"># Reference: ample supply</span></span>
+<span id="cb24-4"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb24-4" tabindex="-1"></a>group_ref <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">30</span>, <span class="at">mean =</span> <span class="dv">100</span>, <span class="at">sd =</span> <span class="dv">2</span>)</span>
+<span id="cb24-5"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb24-5" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb24-6" tabindex="-1"></a><span class="co"># Test: limited availability</span></span>
+<span id="cb24-7"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb24-7" tabindex="-1"></a>group_test <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">20</span>, <span class="at">mean =</span> <span class="dv">99</span>, <span class="at">sd =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p>and</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb25-1" tabindex="-1"></a><span class="co"># Reference mean and SD</span></span>
+<span id="cb25-2"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb25-2" tabindex="-1"></a>ref_mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(group_ref)</span>
+<span id="cb25-3"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb25-3" tabindex="-1"></a>ref_sd <span class="ot">&lt;-</span> <span class="fu">sd</span>(group_ref)</span>
+<span id="cb25-4"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb25-4" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb25-5" tabindex="-1"></a><span class="co"># Raw to ratio scale</span></span>
+<span id="cb25-6"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb25-6" tabindex="-1"></a>margin_raw <span class="ot">&lt;-</span> <span class="fl">1.5</span><span class="sc">*</span>ref_sd</span></code></pre></div>
+<p>We then apply the custom function to assess equivalence:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-1" tabindex="-1"></a>tost_auto_var_equal <span class="ot">&lt;-</span> <span class="cf">function</span>(g1, g2, margin_raw, <span class="at">alpha =</span> <span class="fl">0.05</span>, <span class="at">var.equal =</span> <span class="cn">NULL</span>) {</span>
+<span id="cb26-2"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-2" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-3" tabindex="-1"></a>  <span class="co"># Sample sizes</span></span>
+<span id="cb26-4"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-4" tabindex="-1"></a>  n1 <span class="ot">&lt;-</span> <span class="fu">length</span>(g1)  <span class="co"># Test (e.g., biosimilar or new lot)</span></span>
+<span id="cb26-5"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-5" tabindex="-1"></a>  n2 <span class="ot">&lt;-</span> <span class="fu">length</span>(g2)  <span class="co"># Reference (e.g., RLD or existing lot)</span></span>
+<span id="cb26-6"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-6" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-7" tabindex="-1"></a>  <span class="co"># Variance assumption: automatic or user-specified</span></span>
+<span id="cb26-8"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-8" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(var.equal)) {</span>
+<span id="cb26-9"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-9" tabindex="-1"></a>    combined <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb26-10"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-10" tabindex="-1"></a>      <span class="at">value =</span> <span class="fu">c</span>(g1, g2),</span>
+<span id="cb26-11"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-11" tabindex="-1"></a>      <span class="at">group =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;g1&quot;</span>, <span class="st">&quot;g2&quot;</span>), <span class="at">times =</span> <span class="fu">c</span>(n1, n2)))</span>
+<span id="cb26-12"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-12" tabindex="-1"></a>    )</span>
+<span id="cb26-13"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-13" tabindex="-1"></a>    <span class="co"># Levene’s test (robust to non-normality)</span></span>
+<span id="cb26-14"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-14" tabindex="-1"></a>    p_var <span class="ot">&lt;-</span> car<span class="sc">::</span><span class="fu">leveneTest</span>(value <span class="sc">~</span> group, <span class="at">data =</span> combined)[<span class="dv">1</span>, <span class="st">&quot;Pr(&gt;F)&quot;</span>]</span>
+<span id="cb26-15"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-15" tabindex="-1"></a>    var_equal <span class="ot">&lt;-</span> p_var <span class="sc">&gt;</span> <span class="fl">0.05</span></span>
+<span id="cb26-16"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-16" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb26-17"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-17" tabindex="-1"></a>    var_equal <span class="ot">&lt;-</span> var.equal</span>
+<span id="cb26-18"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-18" tabindex="-1"></a>    p_var <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb26-19"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-19" tabindex="-1"></a>  }</span>
+<span id="cb26-20"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-20" tabindex="-1"></a></span>
+<span id="cb26-21"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-21" tabindex="-1"></a>  <span class="co"># Group means, variances, and difference (delta)</span></span>
+<span id="cb26-22"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-22" tabindex="-1"></a>  mean1 <span class="ot">&lt;-</span> <span class="fu">mean</span>(g1)</span>
+<span id="cb26-23"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-23" tabindex="-1"></a>  mean2 <span class="ot">&lt;-</span> <span class="fu">mean</span>(g2)</span>
+<span id="cb26-24"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-24" tabindex="-1"></a>  var1 <span class="ot">&lt;-</span> <span class="fu">var</span>(g1)</span>
+<span id="cb26-25"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-25" tabindex="-1"></a>  var2 <span class="ot">&lt;-</span> <span class="fu">var</span>(g2)</span>
+<span id="cb26-26"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-26" tabindex="-1"></a>  delta <span class="ot">&lt;-</span> mean1 <span class="sc">-</span> mean2</span>
+<span id="cb26-27"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-27" tabindex="-1"></a></span>
+<span id="cb26-28"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-28" tabindex="-1"></a>   <span class="co"># Standard error (SE) and degrees of freedom (df)</span></span>
+<span id="cb26-29"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-29" tabindex="-1"></a>  <span class="cf">if</span> (var_equal <span class="sc">&amp;&amp;</span> n1 <span class="sc">==</span> n2) {</span>
+<span id="cb26-30"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-30" tabindex="-1"></a>    se_diff <span class="ot">&lt;-</span> <span class="fu">sqrt</span>((var1 <span class="sc">+</span> var2) <span class="sc">/</span> n1)</span>
+<span id="cb26-31"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-31" tabindex="-1"></a>    df <span class="ot">&lt;-</span> n1 <span class="sc">+</span> n2 <span class="sc">-</span> <span class="dv">2</span></span>
+<span id="cb26-32"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-32" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">&quot;Equal variance &amp; equal sample size&quot;</span>)</span>
+<span id="cb26-33"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-33" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (var_equal <span class="sc">&amp;&amp;</span> n1 <span class="sc">!=</span> n2) {</span>
+<span id="cb26-34"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-34" tabindex="-1"></a>    n2 <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fl">1.5</span> <span class="sc">*</span> n1, n2)  <span class="co"># RLD adjustment</span></span>
+<span id="cb26-35"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-35" tabindex="-1"></a>    se_pooled <span class="ot">&lt;-</span> ((n1 <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> var1 <span class="sc">+</span> (n2 <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> var2) <span class="sc">/</span> (n1 <span class="sc">+</span> n2 <span class="sc">-</span> <span class="dv">2</span>)</span>
+<span id="cb26-36"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-36" tabindex="-1"></a>    se_diff <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(se_pooled <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">/</span> n1 <span class="sc">+</span> <span class="dv">1</span> <span class="sc">/</span> n2))</span>
+<span id="cb26-37"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-37" tabindex="-1"></a>    df <span class="ot">&lt;-</span> n1 <span class="sc">+</span> n2 <span class="sc">-</span> <span class="dv">2</span></span>
+<span id="cb26-38"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-38" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">&quot;Equal variance &amp; unequal sample size (RLD adjusted)&quot;</span>)</span>
+<span id="cb26-39"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-39" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb26-40"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-40" tabindex="-1"></a>    <span class="cf">if</span> (n1 <span class="sc">!=</span> n2) {</span>
+<span id="cb26-41"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-41" tabindex="-1"></a>      n2 <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fl">1.5</span> <span class="sc">*</span> n1, n2)  <span class="co"># RLD adjustment</span></span>
+<span id="cb26-42"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-42" tabindex="-1"></a>      <span class="fu">message</span>(<span class="st">&quot;Unequal variance &amp; unequal sample size (RLD adjusted)&quot;</span>)</span>
+<span id="cb26-43"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-43" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb26-44"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-44" tabindex="-1"></a>      <span class="fu">message</span>(<span class="st">&quot;Unequal variance &amp; equal sample size&quot;</span>)</span>
+<span id="cb26-45"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-45" tabindex="-1"></a>    }</span>
+<span id="cb26-46"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-46" tabindex="-1"></a>    se_diff <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(var1 <span class="sc">/</span> n1 <span class="sc">+</span> var2 <span class="sc">/</span> n2)</span>
+<span id="cb26-47"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-47" tabindex="-1"></a>    df_num <span class="ot">&lt;-</span> (var1 <span class="sc">/</span> n1 <span class="sc">+</span> var2 <span class="sc">/</span> n2)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb26-48"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-48" tabindex="-1"></a>    df_den <span class="ot">&lt;-</span> (var1<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> (n1<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> (n1 <span class="sc">-</span> <span class="dv">1</span>))) <span class="sc">+</span> (var2<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> (n2<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> (n2 <span class="sc">-</span> <span class="dv">1</span>)))</span>
+<span id="cb26-49"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-49" tabindex="-1"></a>    df <span class="ot">&lt;-</span> df_num <span class="sc">/</span> df_den</span>
+<span id="cb26-50"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-50" tabindex="-1"></a>  }</span>
+<span id="cb26-51"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-51" tabindex="-1"></a></span>
+<span id="cb26-52"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-52" tabindex="-1"></a></span>
+<span id="cb26-53"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-53" tabindex="-1"></a>  <span class="co"># TOST one-sided t.tests</span></span>
+<span id="cb26-54"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-54" tabindex="-1"></a>  t1 <span class="ot">&lt;-</span> (delta <span class="sc">+</span> margin_raw) <span class="sc">/</span> se_diff</span>
+<span id="cb26-55"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-55" tabindex="-1"></a>  t2 <span class="ot">&lt;-</span> (delta <span class="sc">-</span> margin_raw) <span class="sc">/</span> se_diff</span>
+<span id="cb26-56"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-56" tabindex="-1"></a>  p1 <span class="ot">&lt;-</span> <span class="fu">pt</span>(t1, df, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb26-57"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-57" tabindex="-1"></a>  p2 <span class="ot">&lt;-</span> <span class="fu">pt</span>(t2, df, <span class="at">lower.tail =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb26-58"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-58" tabindex="-1"></a></span>
+<span id="cb26-59"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-59" tabindex="-1"></a>  <span class="co"># 90% Confidence Interval</span></span>
+<span id="cb26-60"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-60" tabindex="-1"></a>  t_crit <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> alpha, df)</span>
+<span id="cb26-61"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-61" tabindex="-1"></a>  ci_lower <span class="ot">&lt;-</span> delta <span class="sc">-</span> t_crit <span class="sc">*</span> se_diff</span>
+<span id="cb26-62"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-62" tabindex="-1"></a>  ci_upper <span class="ot">&lt;-</span> delta <span class="sc">+</span> t_crit <span class="sc">*</span> se_diff</span>
+<span id="cb26-63"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-63" tabindex="-1"></a>  ci_raw_diff <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">round</span>(ci_lower, <span class="dv">3</span>), <span class="st">&quot; – &quot;</span>, <span class="fu">round</span>(ci_upper, <span class="dv">3</span>))</span>
+<span id="cb26-64"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-64" tabindex="-1"></a>  ci_within_margin <span class="ot">&lt;-</span> (ci_lower <span class="sc">&gt;=</span> <span class="sc">-</span>margin_raw) <span class="sc">&amp;</span> (ci_upper <span class="sc">&lt;=</span> margin_raw)</span>
+<span id="cb26-65"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-65" tabindex="-1"></a></span>
+<span id="cb26-66"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-66" tabindex="-1"></a>  <span class="co"># Result table</span></span>
+<span id="cb26-67"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-67" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb26-68"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-68" tabindex="-1"></a>    <span class="at">delta =</span> delta,</span>
+<span id="cb26-69"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-69" tabindex="-1"></a>    <span class="at">t1 =</span> t1, <span class="at">p1 =</span> p1,</span>
+<span id="cb26-70"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-70" tabindex="-1"></a>    <span class="at">t2 =</span> t2, <span class="at">p2 =</span> p2,</span>
+<span id="cb26-71"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-71" tabindex="-1"></a>    <span class="at">CI_lower =</span> ci_lower,</span>
+<span id="cb26-72"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-72" tabindex="-1"></a>    <span class="at">CI_upper =</span> ci_upper,</span>
+<span id="cb26-73"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-73" tabindex="-1"></a>    <span class="at">margin_used =</span> <span class="fu">round</span>(margin_raw, <span class="dv">4</span>),</span>
+<span id="cb26-74"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-74" tabindex="-1"></a>    <span class="at">df =</span> <span class="fu">round</span>(df, <span class="dv">2</span>),</span>
+<span id="cb26-75"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-75" tabindex="-1"></a>    <span class="at">variance_equal =</span> var_equal,</span>
+<span id="cb26-76"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-76" tabindex="-1"></a>    <span class="at">variance_test_p =</span> p_var,</span>
+<span id="cb26-77"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-77" tabindex="-1"></a>    <span class="at">variance_assumption =</span> <span class="cf">if</span> (var_equal) {</span>
+<span id="cb26-78"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-78" tabindex="-1"></a>      <span class="st">&quot;Equal variance assumed (Levene’s test p &gt; 0.05)&quot;</span></span>
+<span id="cb26-79"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-79" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb26-80"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-80" tabindex="-1"></a>      <span class="st">&quot;Unequal variance assumed (Levene’s test p &lt;= 0.05, Welch’s df applied)&quot;</span></span>
+<span id="cb26-81"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-81" tabindex="-1"></a>    },</span>
+<span id="cb26-82"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-82" tabindex="-1"></a>    <span class="at">pass_equivalence =</span> (p1 <span class="sc">&lt;</span> alpha) <span class="sc">&amp;</span> (p2 <span class="sc">&lt;</span> alpha)</span>
+<span id="cb26-83"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-83" tabindex="-1"></a>  )</span>
+<span id="cb26-84"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb26-84" tabindex="-1"></a>}</span></code></pre></div>
+<p>The custom function above automatically determines whether to assume equal or unequal variances via Levene’s test, applies the correct degrees of freedom (pooled or Welch-adjusted), and limits the effective reference sample size to 1.5× that of the test group to avoid artificially narrow confidence intervals.<br />
+We can run the function and save the result as shown below:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb27-1" tabindex="-1"></a>result_tost <span class="ot">&lt;-</span> <span class="fu">tost_auto_var_equal</span>(</span>
+<span id="cb27-2"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb27-2" tabindex="-1"></a>  <span class="at">g1 =</span> group_test,</span>
+<span id="cb27-3"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb27-3" tabindex="-1"></a>  <span class="at">g2 =</span> group_ref,</span>
+<span id="cb27-4"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb27-4" tabindex="-1"></a>  <span class="at">margin_raw =</span> margin_raw </span>
+<span id="cb27-5"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb27-5" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>## Equal variance &amp; unequal sample size (RLD adjusted)</code></pre>
+<p>We can summarize the results with the following helper function:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb29-1" tabindex="-1"></a>summarize_tost_result <span class="ot">&lt;-</span> <span class="cf">function</span>(result_tost) {</span>
+<span id="cb29-2"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb29-2" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;=== TOST Summary ===</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb29-3"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb29-3" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Difference (delta):&quot;</span>, <span class="fu">round</span>(result_tost<span class="sc">$</span>delta, <span class="dv">4</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb29-4"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb29-4" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;90% CI: [&quot;</span>, <span class="fu">round</span>(result_tost<span class="sc">$</span>CI_lower, <span class="dv">4</span>), <span class="st">&quot;,&quot;</span>, <span class="fu">round</span>(result_tost<span class="sc">$</span>CI_upper, <span class="dv">4</span>), <span class="st">&quot;]</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb29-5"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb29-5" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Equivalence margin: ±&quot;</span>, <span class="fu">round</span>(result_tost<span class="sc">$</span>margin_used, <span class="dv">4</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb29-6"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb29-6" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Degrees of freedom:&quot;</span>, result_tost<span class="sc">$</span>df, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb29-7"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb29-7" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Variance assumption:&quot;</span>, result_tost<span class="sc">$</span>variance_assumption, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb29-8"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb29-8" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;TOST p-values: p1 =&quot;</span>, <span class="fu">round</span>(result_tost<span class="sc">$</span>p1, <span class="dv">4</span>), <span class="st">&quot;, p2 =&quot;</span>, <span class="fu">round</span>(result_tost<span class="sc">$</span>p2, <span class="dv">4</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb29-9"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb29-9" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;=&gt; Equivalence achieved? &quot;</span>, <span class="fu">ifelse</span>(result_tost<span class="sc">$</span>pass_equivalence, <span class="st">&quot;YES&quot;</span>, <span class="st">&quot;NO&quot;</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb29-10"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb29-10" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb30-1" tabindex="-1"></a><span class="fu">summarize_tost_result</span>(result_tost)</span></code></pre></div>
+<pre><code>## === TOST Summary ===
+## Difference (delta): -0.5925 
+## 90% CI: [ -1.4929 , 0.308 ]
+## Equivalence margin: ± 2.9431 
+## Degrees of freedom: 48 
+## Variance assumption: Equal variance assumed (Levene’s test p &gt; 0.05) 
+## TOST p-values: p1 = 0 , p2 = 0 
+## =&gt; Equivalence achieved?  YES</code></pre>
+<p>And visualize the confidence interval compared to the equivalence margin:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb32-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb32-2"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb32-2" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb32-3" tabindex="-1"></a>diff <span class="ot">&lt;-</span> <span class="fu">round</span>(result_tost<span class="sc">$</span>delta, <span class="dv">4</span>)</span>
+<span id="cb32-4"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb32-4" tabindex="-1"></a>df_ci <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">lower =</span> <span class="fu">round</span>(result_tost<span class="sc">$</span>CI_lower, <span class="dv">4</span>), </span>
+<span id="cb32-5"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb32-5" tabindex="-1"></a>                    <span class="at">upper =</span> <span class="fu">round</span>(result_tost<span class="sc">$</span>CI_upper, <span class="dv">4</span>), </span>
+<span id="cb32-6"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb32-6" tabindex="-1"></a>                    <span class="at">mean_diff =</span> diff,</span>
+<span id="cb32-7"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb32-7" tabindex="-1"></a>                    <span class="at">e.margin =</span> margin_raw)</span>
+<span id="cb32-8"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb32-8" tabindex="-1"></a></span>
+<span id="cb32-9"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb32-9" tabindex="-1"></a><span class="fu">ggplot</span>(df_ci) <span class="sc">+</span></span>
+<span id="cb32-10"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb32-10" tabindex="-1"></a>  <span class="fu">geom_errorbarh</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="dv">1</span>, <span class="at">xmin =</span> lower, <span class="at">xmax =</span> upper), </span>
+<span id="cb32-11"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb32-11" tabindex="-1"></a>                 <span class="at">height =</span> <span class="fl">0.1</span>,   <span class="co"># </span></span>
+<span id="cb32-12"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb32-12" tabindex="-1"></a>                 <span class="at">linewidth =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb32-13"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb32-13" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="dv">1</span>, <span class="at">x =</span> mean_diff), <span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb32-14"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb32-14" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(<span class="sc">-</span>df_ci<span class="sc">$</span>e.margin, df_ci<span class="sc">$</span>e.margin), <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">linewidth =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb32-15"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb32-15" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="sc">-</span>df_ci<span class="sc">$</span>e.margin<span class="fl">-0.1</span>, df_ci<span class="sc">$</span>e.margin<span class="fl">+0.1</span>) <span class="sc">+</span></span>
+<span id="cb32-16"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb32-16" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="fl">0.5</span>, <span class="fl">1.5</span>) <span class="sc">+</span>  </span>
+<span id="cb32-17"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb32-17" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Equivalence Testing: Confidence Interval vs Margin&quot;</span>,</span>
+<span id="cb32-18"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb32-18" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Difference in Means&quot;</span>, <span class="at">y =</span> <span class="st">&quot;&quot;</span>) <span class="sc">+</span></span>
+<span id="cb32-19"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb32-19" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb32-20"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb32-20" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb32-21"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#cb32-21" tabindex="-1"></a>        <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>())</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-17-1.png" /><!-- --></p>
+<hr />
+</div>
+<div id="conclusion" class="section level2 unnumbered hasAnchor">
+<h2>Conclusion<a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#conclusion" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Based on the observed data:</p>
+<ul>
+<li><p>The difference between test and reference is <strong>–0.5925</strong>, indicating the test product is slightly lower on average, but <strong>very close to the reference</strong>.</p></li>
+<li><p>The <strong>90% confidence interval of the difference</strong> is <strong>[–1.4929, 0.308]</strong>.</p></li>
+<li><p>The <strong>equivalence margin</strong> was calculated from the <strong>±1.5 SD criterion</strong> as <strong>±2.9431</strong>, and <strong>the observed CI is fully contained within this margin</strong>.</p></li>
+<li><p>The degrees of freedom for the test were 48, reflecting <strong>adjustment for equal variances and unequal sample sizes</strong>, as determined by <strong>Levene’s test</strong> (p &gt; 0.05).</p></li>
+<li><p>TOST <strong>p-values</strong> were p1 = 0, p2 = 0, <strong>both well below α = 0.05</strong>.</p></li>
+</ul>
+<p>Conclusion: The test product meets the equivalence criterion, demonstrating analytical similarity to the reference lot despite the sample size imbalance and variance difference.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="chapter-2-application-of-tost-in-r.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="chapter-4-equivalence-margin-on-the-raw-scale.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/USERNAME/REPO/edit/BRANCH/03-RealTost.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["_main.HTML"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

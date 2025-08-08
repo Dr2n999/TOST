@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 5: Power in TOST | Bioequivalence for Biosimilar</title>
+  <meta name="description" content="<p>This book introduces statistical methods for evaluating bioequivalence in biosimilar development.
+Topics include equivalence testing, TOST, and practical R examples.</p>" />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 5: Power in TOST | Bioequivalence for Biosimilar" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="<p>This book introduces statistical methods for evaluating bioequivalence in biosimilar development.
+Topics include equivalence testing, TOST, and practical R examples.</p>" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 5: Power in TOST | Bioequivalence for Biosimilar" />
+  
+  <meta name="twitter:description" content="<p>This book introduces statistical methods for evaluating bioequivalence in biosimilar development.
+Topics include equivalence testing, TOST, and practical R examples.</p>" />
+  
+
+<meta name="author" content="Kyungmin In, GCCL" />
+
+
+<meta name="date" content="2025-08-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="chapter-4-equivalence-margin-on-the-raw-scale.html"/>
+<link rel="next" href="conclusion-2.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Bioequivalence for Biosimilar</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Equivalence Testing Overview</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#why-equivalence-matters-in-biosimilar-development"><i class="fa fa-check"></i>Why Equivalence Matters in Biosimilar Development</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#the-problem-with-traditional-t-tests"><i class="fa fa-check"></i>The Problem with Traditional t-tests</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#introducing-tost-two-one-sided-tests"><i class="fa fa-check"></i>Introducing TOST (Two One-Sided Tests)</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#visualizing-equivalence"><i class="fa fa-check"></i>Visualizing Equivalence</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#summary"><i class="fa fa-check"></i>Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="author.html"><a href="author.html"><i class="fa fa-check"></i>Author</a></li>
+<li class="chapter" data-level="" data-path="chapter-1-mathematical-comparison-t-test-vs-tost.html"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html"><i class="fa fa-check"></i>Chapter 1: Mathematical Comparison: t-test vs TOST</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapter-1-mathematical-comparison-t-test-vs-tost.html"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#t-test-testing-for-difference"><i class="fa fa-check"></i>1. t-test: Testing for Difference</a></li>
+<li class="chapter" data-level="" data-path="chapter-1-mathematical-comparison-t-test-vs-tost.html"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#tost-testing-for-equivalence"><i class="fa fa-check"></i>2. TOST: Testing for Equivalence</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapter-1-mathematical-comparison-t-test-vs-tost.html"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#summary-of-logic"><i class="fa fa-check"></i>Summary of Logic</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="chapter-1-mathematical-comparison-t-test-vs-tost.html"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#simulation-t-test-vs-tost"><i class="fa fa-check"></i>3. Simulation: t-test vs TOST</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapter-1-mathematical-comparison-t-test-vs-tost.html"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#key-results"><i class="fa fa-check"></i>Key Results</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="chapter-1-mathematical-comparison-t-test-vs-tost.html"><a href="chapter-1-mathematical-comparison-t-test-vs-tost.html#code-used-for-the-simulation"><i class="fa fa-check"></i>4. Code used for the Simulation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html"><i class="fa fa-check"></i>Chapter 2: Application of TOST in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#example-scenario"><i class="fa fa-check"></i>Example Scenario</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#step-1-simulated-data"><i class="fa fa-check"></i>Step 1: Simulated Data</a></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#step-2-traditional-t-test-for-comparison"><i class="fa fa-check"></i>Step 2: Traditional t-test (for comparison)</a></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#step-3-tost-analysis-with-toster"><i class="fa fa-check"></i>Step 3: TOST Analysis with TOSTER</a></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#interpretation"><i class="fa fa-check"></i>Interpretation</a></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#step-4-visualizing-equivalence"><i class="fa fa-check"></i>Step 4: Visualizing Equivalence</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#manual-tost-in-r"><i class="fa fa-check"></i>Manual TOST in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#step-1-mean-difference-and-standard-error"><i class="fa fa-check"></i>Step 1: Mean difference and standard error</a></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#step-2-degrees-of-freedom-and-critical-t-value"><i class="fa fa-check"></i>Step 2: Degrees of freedom and critical t-value</a></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#step-3-confidence-interval-of-the-difference"><i class="fa fa-check"></i>Step 3: Confidence interval of the difference</a></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#step-4-compare-ci-to-equivalence-margins"><i class="fa fa-check"></i>Step 4: Compare CI to Equivalence Margins</a></li>
+<li class="chapter" data-level="" data-path="chapter-2-application-of-tost-in-r.html"><a href="chapter-2-application-of-tost-in-r.html#summary-table"><i class="fa fa-check"></i>Summary Table</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="chapter-3-analytical-similarity-for-potency-assay-using-tost.html"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html"><i class="fa fa-check"></i>Chapter 3: Analytical Similarity for Potency Assay Using TOST</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapter-3-analytical-similarity-for-potency-assay-using-tost.html"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#limitation-of-toster-package-in-r"><i class="fa fa-check"></i>Limitation of <code>TOSTER</code> package in R</a></li>
+<li class="chapter" data-level="" data-path="chapter-3-analytical-similarity-for-potency-assay-using-tost.html"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#tost-in-real-world-application"><i class="fa fa-check"></i>TOST in Real World Application</a></li>
+<li class="chapter" data-level="" data-path="chapter-3-analytical-similarity-for-potency-assay-using-tost.html"><a href="chapter-3-analytical-similarity-for-potency-assay-using-tost.html#conclusion"><i class="fa fa-check"></i>Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="chapter-4-equivalence-margin-on-the-raw-scale.html"><a href="chapter-4-equivalence-margin-on-the-raw-scale.html"><i class="fa fa-check"></i>Chapter 4: Equivalence Margin on the Raw Scale</a></li>
+<li class="chapter" data-level="" data-path="chapter-5-power-in-tost.html"><a href="chapter-5-power-in-tost.html"><i class="fa fa-check"></i>Chapter 5: Power in TOST</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapter-5-power-in-tost.html"><a href="chapter-5-power-in-tost.html#power-calculation-using-the-toster-package"><i class="fa fa-check"></i>Power Calculation Using the <code>TOSTER</code> Package</a></li>
+<li class="chapter" data-level="" data-path="chapter-5-power-in-tost.html"><a href="chapter-5-power-in-tost.html#custom-power-estimation-function"><i class="fa fa-check"></i>Custom Power Estimation Function</a></li>
+<li class="chapter" data-level="" data-path="chapter-5-power-in-tost.html"><a href="chapter-5-power-in-tost.html#output-example"><i class="fa fa-check"></i>Output Example</a></li>
+<li class="chapter" data-level="" data-path="chapter-5-power-in-tost.html"><a href="chapter-5-power-in-tost.html#conclusion-1"><i class="fa fa-check"></i>Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="conclusion-2.html"><a href="conclusion-2.html"><i class="fa fa-check"></i>Conclusion</a>
+<ul>
+<li class="chapter" data-level="" data-path="conclusion-2.html"><a href="conclusion-2.html#summary-of-key-concepts"><i class="fa fa-check"></i>Summary of Key Concepts</a></li>
+<li class="chapter" data-level="" data-path="conclusion-2.html"><a href="conclusion-2.html#practical-implications"><i class="fa fa-check"></i>Practical Implications</a></li>
+<li class="chapter" data-level="" data-path="conclusion-2.html"><a href="conclusion-2.html#final-thoughts"><i class="fa fa-check"></i>Final Thoughts</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Bioequivalence for Biosimilar</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="chapter-5-power-in-tost" class="section level1 unnumbered hasAnchor">
+<h1>Chapter 5: Power in TOST<a href="chapter-5-power-in-tost.html#chapter-5-power-in-tost" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>In equivalence testing, it is essential to ensure that the sample size is sufficient to reliably conclude equivalence. A well-powered study minimizes the risk of falsely accepting non-equivalence due to insufficient data.</p>
+<p>In this chapter, we demonstrate how to calculate the <strong>power</strong> of a TOST analysis and estimate whether a given sample size is adequate to achieve the commonly accepted threshold of <strong>80% power</strong>.</p>
+<p>The example is based on simulated <strong>potency assay</strong> data introduced earlier in Chapter 3.</p>
+<hr />
+<div id="power-calculation-using-the-toster-package" class="section level2 unnumbered hasAnchor">
+<h2>Power Calculation Using the <code>TOSTER</code> Package<a href="chapter-5-power-in-tost.html#power-calculation-using-the-toster-package" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We use the <strong>TOSTER</strong> package for power estimation, as it supports raw-scale equivalence margins defined as <strong>absolute differences</strong>, such as ±1.5 SD. This avoids the need for log-transformed margin conversion (e.g., 80–125%) used in bioequivalence testing.</p>
+<p>The equivalence decision in this context is based on two criteria:</p>
+<ul>
+<li>The <strong>90% confidence interval</strong> of the mean difference must fall entirely within the equivalence margin.</li>
+<li>The calculated <strong>power</strong> must exceed a pre-specified threshold (typically ≥80%).</li>
+</ul>
+<p>We begin by simulating data from a reference and a test group:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="chapter-5-power-in-tost.html#cb33-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb33-2"><a href="chapter-5-power-in-tost.html#cb33-2" tabindex="-1"></a>group_ref <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">30</span>, <span class="at">mean =</span> <span class="dv">100</span>, <span class="at">sd =</span> <span class="dv">2</span>)  <span class="co"># Reference product</span></span>
+<span id="cb33-3"><a href="chapter-5-power-in-tost.html#cb33-3" tabindex="-1"></a>group_test <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">20</span>, <span class="at">mean =</span> <span class="dv">99</span>, <span class="at">sd =</span> <span class="dv">2</span>) <span class="co"># Test product</span></span></code></pre></div>
+<hr />
+</div>
+<div id="custom-power-estimation-function" class="section level2 unnumbered hasAnchor">
+<h2>Custom Power Estimation Function<a href="chapter-5-power-in-tost.html#custom-power-estimation-function" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The function below estimates the power of TOST while retaining key logic from our custom implementation <code>tost_auto_var_equal()</code>:</p>
+<ul>
+<li>Variance equality is checked via Levene’s test.<br />
+</li>
+<li>RLD sample size is capped at 1.5× the test group.</li>
+<li>Pooled or conservative SD is used depending on variance assumption.</li>
+</ul>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="chapter-5-power-in-tost.html#cb34-1" tabindex="-1"></a><span class="fu">library</span>(TOSTER)</span>
+<span id="cb34-2"><a href="chapter-5-power-in-tost.html#cb34-2" tabindex="-1"></a><span class="fu">library</span>(car)</span></code></pre></div>
+<pre><code>## Loading required package: carData</code></pre>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="chapter-5-power-in-tost.html#cb36-1" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb36-2"><a href="chapter-5-power-in-tost.html#cb36-2" tabindex="-1"></a></span>
+<span id="cb36-3"><a href="chapter-5-power-in-tost.html#cb36-3" tabindex="-1"></a>power_tost_from_data <span class="ot">&lt;-</span> <span class="cf">function</span>(group1, group2,</span>
+<span id="cb36-4"><a href="chapter-5-power-in-tost.html#cb36-4" tabindex="-1"></a>                                 <span class="at">margin_sd =</span> <span class="fl">1.5</span>,</span>
+<span id="cb36-5"><a href="chapter-5-power-in-tost.html#cb36-5" tabindex="-1"></a>                                 <span class="at">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb36-6"><a href="chapter-5-power-in-tost.html#cb36-6" tabindex="-1"></a>                                 <span class="at">var.equal =</span> <span class="cn">NULL</span>) {</span>
+<span id="cb36-7"><a href="chapter-5-power-in-tost.html#cb36-7" tabindex="-1"></a>  n1 <span class="ot">&lt;-</span> <span class="fu">length</span>(group1)</span>
+<span id="cb36-8"><a href="chapter-5-power-in-tost.html#cb36-8" tabindex="-1"></a>  n2 <span class="ot">&lt;-</span> <span class="fu">length</span>(group2)</span>
+<span id="cb36-9"><a href="chapter-5-power-in-tost.html#cb36-9" tabindex="-1"></a></span>
+<span id="cb36-10"><a href="chapter-5-power-in-tost.html#cb36-10" tabindex="-1"></a>  mean1 <span class="ot">&lt;-</span> <span class="fu">mean</span>(group1)</span>
+<span id="cb36-11"><a href="chapter-5-power-in-tost.html#cb36-11" tabindex="-1"></a>  mean2 <span class="ot">&lt;-</span> <span class="fu">mean</span>(group2)</span>
+<span id="cb36-12"><a href="chapter-5-power-in-tost.html#cb36-12" tabindex="-1"></a>  var1 <span class="ot">&lt;-</span> <span class="fu">var</span>(group1)</span>
+<span id="cb36-13"><a href="chapter-5-power-in-tost.html#cb36-13" tabindex="-1"></a>  var2 <span class="ot">&lt;-</span> <span class="fu">var</span>(group2)</span>
+<span id="cb36-14"><a href="chapter-5-power-in-tost.html#cb36-14" tabindex="-1"></a>  delta <span class="ot">&lt;-</span> mean1 <span class="sc">-</span> mean2  <span class="co"># raw difference</span></span>
+<span id="cb36-15"><a href="chapter-5-power-in-tost.html#cb36-15" tabindex="-1"></a></span>
+<span id="cb36-16"><a href="chapter-5-power-in-tost.html#cb36-16" tabindex="-1"></a>  <span class="co"># Variance equality check</span></span>
+<span id="cb36-17"><a href="chapter-5-power-in-tost.html#cb36-17" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(var.equal)) {</span>
+<span id="cb36-18"><a href="chapter-5-power-in-tost.html#cb36-18" tabindex="-1"></a>    df_test <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">value =</span> <span class="fu">c</span>(group1, group2),</span>
+<span id="cb36-19"><a href="chapter-5-power-in-tost.html#cb36-19" tabindex="-1"></a>                          <span class="at">group =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;g1&quot;</span>, <span class="st">&quot;g2&quot;</span>), <span class="at">times =</span> <span class="fu">c</span>(n1, n2))))</span>
+<span id="cb36-20"><a href="chapter-5-power-in-tost.html#cb36-20" tabindex="-1"></a>    p_var <span class="ot">&lt;-</span> <span class="fu">leveneTest</span>(value <span class="sc">~</span> group, <span class="at">data =</span> df_test)[<span class="dv">1</span>, <span class="st">&quot;Pr(&gt;F)&quot;</span>]</span>
+<span id="cb36-21"><a href="chapter-5-power-in-tost.html#cb36-21" tabindex="-1"></a>    var_equal <span class="ot">&lt;-</span> p_var <span class="sc">&gt;</span> <span class="fl">0.05</span></span>
+<span id="cb36-22"><a href="chapter-5-power-in-tost.html#cb36-22" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb36-23"><a href="chapter-5-power-in-tost.html#cb36-23" tabindex="-1"></a>    var_equal <span class="ot">&lt;-</span> var.equal</span>
+<span id="cb36-24"><a href="chapter-5-power-in-tost.html#cb36-24" tabindex="-1"></a>    p_var <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb36-25"><a href="chapter-5-power-in-tost.html#cb36-25" tabindex="-1"></a>  }</span>
+<span id="cb36-26"><a href="chapter-5-power-in-tost.html#cb36-26" tabindex="-1"></a></span>
+<span id="cb36-27"><a href="chapter-5-power-in-tost.html#cb36-27" tabindex="-1"></a>  <span class="co"># Margin in raw units (absolute difference)</span></span>
+<span id="cb36-28"><a href="chapter-5-power-in-tost.html#cb36-28" tabindex="-1"></a>  ref_sd <span class="ot">&lt;-</span> <span class="fu">sd</span>(group2)</span>
+<span id="cb36-29"><a href="chapter-5-power-in-tost.html#cb36-29" tabindex="-1"></a>  eqb_raw <span class="ot">&lt;-</span> margin_sd <span class="sc">*</span> ref_sd  <span class="co"># ±1.5 SD (raw scale)</span></span>
+<span id="cb36-30"><a href="chapter-5-power-in-tost.html#cb36-30" tabindex="-1"></a></span>
+<span id="cb36-31"><a href="chapter-5-power-in-tost.html#cb36-31" tabindex="-1"></a>  <span class="co"># Adjust RLD sample size (FDA guidance)</span></span>
+<span id="cb36-32"><a href="chapter-5-power-in-tost.html#cb36-32" tabindex="-1"></a>  n2_adj <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fl">1.5</span> <span class="sc">*</span> n1, n2)</span>
+<span id="cb36-33"><a href="chapter-5-power-in-tost.html#cb36-33" tabindex="-1"></a></span>
+<span id="cb36-34"><a href="chapter-5-power-in-tost.html#cb36-34" tabindex="-1"></a>  <span class="co"># Harmonic mean sample size for power estimation</span></span>
+<span id="cb36-35"><a href="chapter-5-power-in-tost.html#cb36-35" tabindex="-1"></a>  n_adj <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">/</span> n1 <span class="sc">+</span> <span class="dv">1</span> <span class="sc">/</span> n2_adj)</span>
+<span id="cb36-36"><a href="chapter-5-power-in-tost.html#cb36-36" tabindex="-1"></a></span>
+<span id="cb36-37"><a href="chapter-5-power-in-tost.html#cb36-37" tabindex="-1"></a>  <span class="co"># Pooled SD for power calculation</span></span>
+<span id="cb36-38"><a href="chapter-5-power-in-tost.html#cb36-38" tabindex="-1"></a>  <span class="cf">if</span> (var_equal) {</span>
+<span id="cb36-39"><a href="chapter-5-power-in-tost.html#cb36-39" tabindex="-1"></a>    pooled_sd <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(((n1 <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span>var1 <span class="sc">+</span> (n2 <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span>var2) <span class="sc">/</span> (n1 <span class="sc">+</span> n2 <span class="sc">-</span> <span class="dv">2</span>))</span>
+<span id="cb36-40"><a href="chapter-5-power-in-tost.html#cb36-40" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb36-41"><a href="chapter-5-power-in-tost.html#cb36-41" tabindex="-1"></a>    pooled_sd <span class="ot">&lt;-</span> <span class="fu">sqrt</span>((var1 <span class="sc">+</span> var2) <span class="sc">/</span> <span class="dv">2</span>)  <span class="co"># conservative</span></span>
+<span id="cb36-42"><a href="chapter-5-power-in-tost.html#cb36-42" tabindex="-1"></a>  }</span>
+<span id="cb36-43"><a href="chapter-5-power-in-tost.html#cb36-43" tabindex="-1"></a></span>
+<span id="cb36-44"><a href="chapter-5-power-in-tost.html#cb36-44" tabindex="-1"></a>  <span class="co"># Power estimation via TOSTER on raw scale</span></span>
+<span id="cb36-45"><a href="chapter-5-power-in-tost.html#cb36-45" tabindex="-1"></a>  power_result <span class="ot">&lt;-</span> <span class="fu">power_t_TOST</span>(</span>
+<span id="cb36-46"><a href="chapter-5-power-in-tost.html#cb36-46" tabindex="-1"></a>    <span class="at">n =</span> n_adj,</span>
+<span id="cb36-47"><a href="chapter-5-power-in-tost.html#cb36-47" tabindex="-1"></a>    <span class="at">delta =</span> delta,</span>
+<span id="cb36-48"><a href="chapter-5-power-in-tost.html#cb36-48" tabindex="-1"></a>    <span class="at">sd =</span> pooled_sd,</span>
+<span id="cb36-49"><a href="chapter-5-power-in-tost.html#cb36-49" tabindex="-1"></a>    <span class="at">eqb =</span> eqb_raw,</span>
+<span id="cb36-50"><a href="chapter-5-power-in-tost.html#cb36-50" tabindex="-1"></a>    <span class="at">alpha =</span> alpha,</span>
+<span id="cb36-51"><a href="chapter-5-power-in-tost.html#cb36-51" tabindex="-1"></a>    <span class="at">type =</span> <span class="st">&quot;two.sample&quot;</span></span>
+<span id="cb36-52"><a href="chapter-5-power-in-tost.html#cb36-52" tabindex="-1"></a>  )</span>
+<span id="cb36-53"><a href="chapter-5-power-in-tost.html#cb36-53" tabindex="-1"></a></span>
+<span id="cb36-54"><a href="chapter-5-power-in-tost.html#cb36-54" tabindex="-1"></a>  power_value <span class="ot">&lt;-</span> power_result<span class="sc">$</span>power  <span class="co"># extract numeric</span></span>
+<span id="cb36-55"><a href="chapter-5-power-in-tost.html#cb36-55" tabindex="-1"></a></span>
+<span id="cb36-56"><a href="chapter-5-power-in-tost.html#cb36-56" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
+<span id="cb36-57"><a href="chapter-5-power-in-tost.html#cb36-57" tabindex="-1"></a>    <span class="at">mean_diff =</span> <span class="fu">round</span>(delta, <span class="dv">4</span>),</span>
+<span id="cb36-58"><a href="chapter-5-power-in-tost.html#cb36-58" tabindex="-1"></a>    <span class="at">pooled_sd =</span> <span class="fu">round</span>(pooled_sd, <span class="dv">4</span>),</span>
+<span id="cb36-59"><a href="chapter-5-power-in-tost.html#cb36-59" tabindex="-1"></a>    <span class="at">margin_raw =</span> <span class="fu">round</span>(eqb_raw, <span class="dv">4</span>),</span>
+<span id="cb36-60"><a href="chapter-5-power-in-tost.html#cb36-60" tabindex="-1"></a>    <span class="at">n1 =</span> n1,</span>
+<span id="cb36-61"><a href="chapter-5-power-in-tost.html#cb36-61" tabindex="-1"></a>    <span class="at">n2_original =</span> <span class="fu">length</span>(group2),</span>
+<span id="cb36-62"><a href="chapter-5-power-in-tost.html#cb36-62" tabindex="-1"></a>    <span class="at">n2_adj =</span> <span class="fu">round</span>(n2_adj, <span class="dv">1</span>),</span>
+<span id="cb36-63"><a href="chapter-5-power-in-tost.html#cb36-63" tabindex="-1"></a>    <span class="at">n_adj =</span> <span class="fu">round</span>(n_adj, <span class="dv">1</span>),</span>
+<span id="cb36-64"><a href="chapter-5-power-in-tost.html#cb36-64" tabindex="-1"></a>    <span class="at">var_equal =</span> var_equal,</span>
+<span id="cb36-65"><a href="chapter-5-power-in-tost.html#cb36-65" tabindex="-1"></a>    <span class="at">variance_test_p =</span> <span class="fu">round</span>(p_var, <span class="dv">4</span>),</span>
+<span id="cb36-66"><a href="chapter-5-power-in-tost.html#cb36-66" tabindex="-1"></a>    <span class="at">variance_assumption =</span> <span class="cf">if</span> (var_equal) {</span>
+<span id="cb36-67"><a href="chapter-5-power-in-tost.html#cb36-67" tabindex="-1"></a>      <span class="st">&quot;Equal variance assumed (Levene’s test p &gt; 0.05)&quot;</span></span>
+<span id="cb36-68"><a href="chapter-5-power-in-tost.html#cb36-68" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb36-69"><a href="chapter-5-power-in-tost.html#cb36-69" tabindex="-1"></a>      <span class="st">&quot;Unequal variance assumed (Levene’s test p &lt;= 0.05, Welch’s df applied)&quot;</span></span>
+<span id="cb36-70"><a href="chapter-5-power-in-tost.html#cb36-70" tabindex="-1"></a>    },</span>
+<span id="cb36-71"><a href="chapter-5-power-in-tost.html#cb36-71" tabindex="-1"></a>    <span class="at">power =</span> <span class="fu">round</span>(power_value, <span class="dv">4</span>)</span>
+<span id="cb36-72"><a href="chapter-5-power-in-tost.html#cb36-72" tabindex="-1"></a>  )</span>
+<span id="cb36-73"><a href="chapter-5-power-in-tost.html#cb36-73" tabindex="-1"></a>}</span></code></pre></div>
+<p>We now apply the function to our simulated data:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="chapter-5-power-in-tost.html#cb37-1" tabindex="-1"></a>power_result <span class="ot">&lt;-</span> <span class="fu">power_tost_from_data</span>(group_test, group_ref)</span></code></pre></div>
+<p>We can summarize the results using a helper function below:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="chapter-5-power-in-tost.html#cb38-1" tabindex="-1"></a>summarize_power_result <span class="ot">&lt;-</span> <span class="cf">function</span>(power_tost) {</span>
+<span id="cb38-2"><a href="chapter-5-power-in-tost.html#cb38-2" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;=== Power evaluation Summary ===</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb38-3"><a href="chapter-5-power-in-tost.html#cb38-3" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Power:&quot;</span>, <span class="fu">round</span>(power_result<span class="sc">$</span>power, <span class="dv">3</span>),  <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb38-4"><a href="chapter-5-power-in-tost.html#cb38-4" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Difference (delta):&quot;</span>, <span class="fu">round</span>(power_result<span class="sc">$</span>mean_diff, <span class="dv">3</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb38-5"><a href="chapter-5-power-in-tost.html#cb38-5" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Equivalence margin: ±&quot;</span>, <span class="fu">round</span>(power_result<span class="sc">$</span>margin_raw, <span class="dv">3</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb38-6"><a href="chapter-5-power-in-tost.html#cb38-6" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Variance assumtion:&quot;</span>, power_result<span class="sc">$</span>variance_assumption, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span> )</span>
+<span id="cb38-7"><a href="chapter-5-power-in-tost.html#cb38-7" tabindex="-1"></a>  <span class="cf">if</span> (power_result<span class="sc">$</span>power <span class="sc">&gt;=</span> <span class="fl">0.8</span>) {</span>
+<span id="cb38-8"><a href="chapter-5-power-in-tost.html#cb38-8" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Conclusion: The current sample size provides sufficient power (≥80%) to assess equivalence.</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb38-9"><a href="chapter-5-power-in-tost.html#cb38-9" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb38-10"><a href="chapter-5-power-in-tost.html#cb38-10" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Warning: Power is below 80%. Consider increasing the sample size to ensure reliable equivalence testing.</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb38-11"><a href="chapter-5-power-in-tost.html#cb38-11" tabindex="-1"></a>}</span>
+<span id="cb38-12"><a href="chapter-5-power-in-tost.html#cb38-12" tabindex="-1"></a>}</span></code></pre></div>
+<hr />
+</div>
+<div id="output-example" class="section level2 unnumbered hasAnchor">
+<h2>Output Example<a href="chapter-5-power-in-tost.html#output-example" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="chapter-5-power-in-tost.html#cb39-1" tabindex="-1"></a><span class="fu">summarize_power_result</span>(power_tost)</span></code></pre></div>
+<pre><code>## === Power evaluation Summary ===
+## Power: 0.996 
+## Difference (delta): -0.593 
+## Equivalence margin: ± 2.943 
+## Variance assumtion: Equal variance assumed (Levene’s test p &gt; 0.05) 
+## Conclusion: The current sample size provides sufficient power (≥80%) to assess equivalence.</code></pre>
+<hr />
+</div>
+<div id="conclusion-1" class="section level2 unnumbered hasAnchor">
+<h2>Conclusion<a href="chapter-5-power-in-tost.html#conclusion-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Based on the observed data:</p>
+<ul>
+<li>The study shows a mean difference of –0.593, and a 90% confidence interval entirely within the ±1.5 SD margin.<br />
+</li>
+<li>The <strong>calculated power is 99.6%</strong>, well above the 85% threshold.<br />
+</li>
+<li>Variance equality was assumed based on Levene’s test.</li>
+</ul>
+<p><strong>Conclusion</strong>: The current sample size provides sufficient statistical power to assess equivalence with high confidence.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="chapter-4-equivalence-margin-on-the-raw-scale.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="conclusion-2.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/USERNAME/REPO/edit/BRANCH/05-Power.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["_main.HTML"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

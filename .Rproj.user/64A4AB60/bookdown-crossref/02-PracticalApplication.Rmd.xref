@@ -1,0 +1,14 @@
+h1:chapter-2-application-of-tost-in-r Chapter 2: Application of TOST in R
+h2:example-scenario Example Scenario
+h3:step-1-simulated-data Step 1: Simulated Data
+h3:step-2-traditional-t-test-for-comparison Step 2: Traditional t-test (for comparison)
+h3:step-3-tost-analysis-with-toster Step 3: TOST Analysis with TOSTER
+h3:interpretation Interpretation
+h3:step-4-visualizing-equivalence Step 4: Visualizing Equivalence
+h2:manual-tost-in-r Manual TOST in R
+h3:step-1-mean-difference-and-standard-error Step 1: Mean difference and standard error
+h3:step-2-degrees-of-freedom-and-critical-t-value Step 2: Degrees of freedom and critical t-value
+h3:step-3-confidence-interval-of-the-difference Step 3: Confidence interval of the difference
+h3:step-4-compare-ci-to-equivalence-margins Step 4: Compare CI to Equivalence Margins
+h3:summary-table Summary Table
+
