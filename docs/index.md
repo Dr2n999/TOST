@@ -60,7 +60,7 @@ If the entire 90% or 95% confidence interval of the treatment difference lies *w
 ## Summary {.unnumbered}
 
 | Test Type | Null Hypothesis H₀ | Alternative H₁     | When Used?                 |
-|-----------------|-----------------|-----------------|---------------------|
+|-----------|--------------------|--------------------|----------------------------|
 | t-test    | No difference      | Difference (Δ ≠ 0) | To detect differences      |
 | TOST      | Not equivalent     | Equivalent         | To demonstrate equivalence |
 
@@ -219,7 +219,7 @@ ggplot(df_plot, aes(n, probability, color = method)) +
 
 <!--chapter:end:01-ttestvstost.Rmd-->
 
-# Chapter 2:  Application of TOST in R {.unnumbered}
+# Chapter 2: Application of TOST in R {.unnumbered}
 
 In this chapter, we demonstrate how to apply the **TOST** procedure using R. We will use the `TOSTER` package, which provides user-friendly functions for equivalence testing.
 
@@ -435,7 +435,10 @@ ggplot(df_ci) +
         axis.ticks.y = element_blank())
 ```
 
-![](_main_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+<div class="figure">
+<img src="_main_files/figure-html/unnamed-chunk-6-1.png" alt="Equivalence Testing: Confidence Interval vs Margin"  />
+<p class="caption">(\#fig:unnamed-chunk-6)Equivalence Testing: Confidence Interval vs Margin</p>
+</div>
 
 > The confidence interval does not lie within the red dashed lines (equivalence margin) and therefore equivalence is not supported.
 
@@ -780,6 +783,7 @@ summarize_tost_result(result_tost)
 And visualize the confidence interval compared to the equivalence margin:
 
 
+
 ``` r
 library(ggplot2)
 
@@ -804,7 +808,11 @@ ggplot(df_ci) +
         axis.ticks.y = element_blank())
 ```
 
-![](_main_files/figure-html/unnamed-chunk-17-1.png)<!-- -->
+
+<div class="figure">
+<img src="_main_files/figure-html/unnamed-chunk-19-1.png" alt="Equivalence Testing: Confidence Interval vs Margin"  />
+<p class="caption">(\#fig:unnamed-chunk-19)Equivalence Testing: Confidence Interval vs Margin</p>
+</div>
 
 ------------------------------------------------------------------------  
 
@@ -834,8 +842,7 @@ $$
 \text{Equivalence Range (raw scale)} = 
 \left[ \mu_{\text{ref}} - 1.5 \cdot \sigma_{\text{ref}},\ 
         \mu_{\text{ref}} + 1.5 \cdot \sigma_{\text{ref}} \right]
-$$
-This can be visualized with the following example:
+$$ This can be visualized with the following example:
 
 -   Reference lots’ mean: **100**
 -   Reference lots’ standard deviation: **2**
@@ -844,13 +851,16 @@ This can be visualized with the following example:
 
 The equivalence range is therefore [**97**, **103**].
 
-![](_main_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
+<div class="figure">
+<img src="_main_files/figure-html/unnamed-chunk-20-1.png" alt="Data distribution and Equivalence margin on Raw Sacle"  />
+<p class="caption">(\#fig:unnamed-chunk-20)Data distribution and Equivalence margin on Raw Sacle</p>
+</div>
 
 > Note: A few data points fall outside the equivalence range, but this is expected.\
 > In equivalence testing, it is the **mean of the test lot** that must fall within the pre-defined margin —not every individual measurement.\
 > This visualization is provided to give an intuitive sense of data spread.
 
-However, for statistical testing using the TOST procedure, this range is transformed into an **equivalence margin θ** on the **mean difference scale**.  
+However, for statistical testing using the TOST procedure, this range is transformed into an **equivalence margin θ** on the **mean difference scale**.\
 This allows the hypotheses to be framed as:
 
 $$
@@ -859,12 +869,14 @@ H_0: |\mu_{\text{test}} - \mu_{\text{ref}}| \geq \theta
 H_A: |\mu_{\text{test}} - \mu_{\text{ref}}| < \theta
 $$
 
-This is why all plots and results in this book use the **mean difference scale**, where the equivalence margin appears symmetrically as [−θ, +θ] around 0.  
+This is why all plots and results in this book use the **mean difference scale**, where the equivalence margin appears symmetrically as [−θ, +θ] around 0.
 
 This framing avoids confusion and ensures consistency with the TOST framework. Furthermore, this approach eliminates the need for **transformation to the ratio scale**, allowing equivalence to be directly assessed if the 90% confidence interval of the mean difference lies entirely within [–θ, +θ], equivalence is concluded.
 
-![](_main_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
-
+<div class="figure">
+<img src="_main_files/figure-html/unnamed-chunk-21-1.png" alt="Equivalence Testing: Confidence Interval vs Margin"  />
+<p class="caption">(\#fig:unnamed-chunk-21)Equivalence Testing: Confidence Interval vs Margin</p>
+</div>
 
 <!--chapter:end:04-EquivalenceMargin.Rmd-->
 

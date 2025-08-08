@@ -231,8 +231,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 \text{Equivalence Range (raw scale)} =
 \left[ \mu_{\text{ref}} - 1.5 \cdot \sigma_{\text{ref}},\
         \mu_{\text{ref}} + 1.5 \cdot \sigma_{\text{ref}} \right]
-\]</span>
-This can be visualized with the following example:</p>
+\]</span> This can be visualized with the following example:</p>
 <ul>
 <li>Reference lots’ mean: <strong>100</strong></li>
 <li>Reference lots’ standard deviation: <strong>2</strong></li>
@@ -240,7 +239,12 @@ This can be visualized with the following example:</p>
 <li>Let us assume that the test lot has a mean of <strong>99</strong></li>
 </ul>
 <p>The equivalence range is therefore [<strong>97</strong>, <strong>103</strong>].</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-18-1.png" /><!-- --></p>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-20"></span>
+<img src="_main_files/figure-html/unnamed-chunk-20-1.png" alt="Data distribution and Equivalence margin on Raw Sacle"  />
+<p class="caption">
+Figure 3: Data distribution and Equivalence margin on Raw Sacle
+</p>
+</div>
 <blockquote>
 <p>Note: A few data points fall outside the equivalence range, but this is expected.<br />
 In equivalence testing, it is the <strong>mean of the test lot</strong> that must fall within the pre-defined margin —not every individual measurement.<br />
@@ -255,7 +259,12 @@ H_A: |\mu_{\text{test}} - \mu_{\text{ref}}| &lt; \theta
 \]</span></p>
 <p>This is why all plots and results in this book use the <strong>mean difference scale</strong>, where the equivalence margin appears symmetrically as [−θ, +θ] around 0.</p>
 <p>This framing avoids confusion and ensures consistency with the TOST framework. Furthermore, this approach eliminates the need for <strong>transformation to the ratio scale</strong>, allowing equivalence to be directly assessed if the 90% confidence interval of the mean difference lies entirely within [–θ, +θ], equivalence is concluded.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-19-1.png" /><!-- --></p>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-21"></span>
+<img src="_main_files/figure-html/unnamed-chunk-21-1.png" alt="Equivalence Testing: Confidence Interval vs Margin"  />
+<p class="caption">
+Figure 4: Equivalence Testing: Confidence Interval vs Margin
+</p>
+</div>
 
 </div>
             </section>
